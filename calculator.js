@@ -9,6 +9,7 @@ const OPERATIONS = {
 
 const DISPLAY = document.getElementById("display");
 let full_operation = [];
+let accepting_decimals = false;
 
 const NUMBER_BUTTONS = document.getElementsByClassName("number-button");
 const OPERATION_BUTTONS = document.getElementsByClassName("operator-button");
@@ -18,7 +19,7 @@ const OPERATION_BUTTONS = document.getElementsByClassName("operator-button");
 //#region OP CONTROL
 
 function addItemToOperation(value) {
-    if (full_operation.length == 0 && typeof value == "string") return;
+    if (full_operation.length == 0 && typeof value == "string" || typeof full_operation[0] == "string") return;
     if (typeof full_operation[full_operation.length - 1] == typeof value) {
         full_operation.pop();
         full_operation.push(value);
@@ -52,7 +53,7 @@ function reduceOperation(operation) {
 
 function operate(op, a, b) {
     switch(op) {
-        case OPERATIONS.divide: return b == 0 ? "ZERO DIVISION" : a / b;
+        case OPERATIONS.divide: return b == 0 ? "That's not allowed here." : a / b;
         case OPERATIONS.multiply: return a * b;
         case OPERATIONS.subtract: return a - b;
         case OPERATIONS.sum: return a + b;
@@ -102,6 +103,23 @@ function result() {
     reduceOperation(OPERATIONS.subtract);
     reduceOperation(OPERATIONS.sum);
 
+    full_operation[0] = parseFloat(full_operation[0].toFixed(2));
+
+    updateDisplay();
+}
+
+function startDecimal() {
+    if (full_operation.length != 0 && !accepting_decimals && typeof full_operation[full_operation.length - 1] != "string") {
+        accepting_decimals = true;
+        full_operation[full_operation.length - 1] += ".";
+        updateDisplay();
+    }
+}
+
+function random() {
+    let randomNum = Math.random() * 6;
+    if (full_operation.length == 0)
+        addItemToOperation(randomNum);
     updateDisplay();
 }
 
@@ -112,6 +130,8 @@ function result() {
 let clear_button = document.getElementById("clear");
 let backspace = document.getElementById("backspace");
 let equals = document.getElementById("equals");
+let decimal = document.getElementById("decimal");
+let randomNum = document.getElementById("random");
 
 clear_button.addEventListener("click", () => {
     clear();
@@ -123,21 +143,47 @@ backspace.addEventListener("click", () => {
 
 equals.addEventListener("click", () => {
     result();
-})
+});
+
+decimal.addEventListener("click", () => {
+    startDecimal();
+});
+
+randomNum.addEventListener("click", () => {
+    random();
+});
 
 for (const number of NUMBER_BUTTONS) {
     let numAttribute = parseInt(number.getAttribute("data-number"));
     number.addEventListener("click", () => {
-        addItemToOperation(numAttribute);
-        updateDisplay();
+        if(accepting_decimals) {
+            full_operation[full_operation.length - 1] += numAttribute;
+            updateDisplay();
+        }
+        else {
+            addItemToOperation(numAttribute);
+            updateDisplay();
+        }
     });
 }
 
 for (const operator of OPERATION_BUTTONS) {
     let opAttribute = operator.getAttribute("data-operation");
     operator.addEventListener("click", () => {
-        addItemToOperation(opAttribute);
-        updateDisplay();
+        if (accepting_decimals) {
+            let numString = full_operation[full_operation.length - 1];
+            if (numString[numString.length - 1] == ".") return;
+            else {
+                accepting_decimals = false;
+                full_operation[full_operation.length - 1] = parseFloat(numString);
+                addItemToOperation(opAttribute);
+                updateDisplay();
+            }
+        }
+        else {
+            addItemToOperation(opAttribute);
+            updateDisplay();
+        }
     });
 }
 
