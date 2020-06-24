@@ -1,0 +1,70 @@
+:root {
+    --main-background: rgb(19, 16, 31);
+    --display-background: rgb(252, 230, 230);
+    --number-button-color: rgb(22, 241, 113);
+    --button-border-color: rgb(41, 39, 39);
+    --button-hover-color: rgba(248, 12, 12, 0.692);
+    --operator-color: rgb(98, 180, 235);
+}
+html, body {
+    margin: 0em;
+    width: 100%;
+    font-size: 15px;
+    font-family: 'poppins';
+    background-color: var(--main-background);
+}
+#menu {
+    position: fixed;
+}
+main {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+#calculator {
+    color: black;
+    background-color: var(--display-background);
+    border: 0.5rem solid var(--button-border-color);
+    border-radius: 5px;
+}
+.calculator-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.calc-button  {
+    border: none;
+    border-radius: 0em;
+    outline: none;
+    transition: 0.5s;
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+}
+#display {
+    background-color: var(--display-background);
+    padding: 1rem;
+    margin-bottom: -0.5rem;
+    outline: none;
+    font-size: 2rem;
+    min-width: 25rem;
+    min-height: 5rem;
+}
+.number-button {
+    background-color: var(--number-button-color);
+}
+.operator-button, #equals {
+    background-color: var(--operator-color);
+}
+.calc-button:hover, #equals:hover {
+    background-color: var(--button-hover-color);
+}
+.calc-button:active {
+    outline: 2px groove var(--main-background);
+}
