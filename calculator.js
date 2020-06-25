@@ -11,7 +11,7 @@ let clear_button = document.getElementById("clear");
 let backspace = document.getElementById("backspace");
 let equals = document.getElementById("equals");
 let decimal = document.getElementById("decimal");
-let random_num = document.getElementById("random");
+let plus_minus = document.getElementById("plus-minus");
 
 const DISPLAY = document.getElementById("display");
 let full_operation = [];
@@ -24,7 +24,7 @@ const OPERATION_BUTTONS = document.getElementsByClassName("operator-button");
 
 //#region OP CONTROL
 
-function addItemToOperation(value) {
+/*function addItemToOperation(value) {
     if (full_operation.length == 0 && typeof value == "string" || typeof full_operation[0] == "string") return;
     if (typeof full_operation[full_operation.length - 1] == typeof value) {
         full_operation.pop();
@@ -33,7 +33,7 @@ function addItemToOperation(value) {
     else {
         full_operation.push(value);
     }
-}
+}*/
 
 function addOperator(op) {
     if (full_operation.length == 0 || typeof full_operation[0] == "string") return;
@@ -149,11 +149,11 @@ function startDecimal() {
     }
 }
 
-function random() {
-    let randomNum = Math.random() * 6;
-    if (full_operation.length == 0)
-        addItemToOperation(randomNum);
-    updateDisplay();
+function changeSign() {
+    if (typeof full_operation[full_operation.length - 1] == "number") {
+        full_operation[full_operation.length - 1] = -(full_operation[full_operation.length - 1]);
+        updateDisplay();
+    }
 }
 
 //#endregion UI FUNCTIONS
@@ -176,8 +176,8 @@ decimal.addEventListener("click", () => {
     startDecimal();
 });
 
-random_num.addEventListener("click", () => {
-    random();
+plus_minus.addEventListener("click", () => {
+    changeSign();
 });
 
 for (const number of NUMBER_BUTTONS) {

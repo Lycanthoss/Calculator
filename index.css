@@ -65,3 +65,6 @@ main {
 .calc-button:active {
     outline: 2px groove var(--main-background);
 }
+#clear {
+    font-weight: bold;
+}
